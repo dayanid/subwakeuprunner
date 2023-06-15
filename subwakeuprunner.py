@@ -40,5 +40,5 @@ for i in tqdm.tqdm(range(10)):
 # Example usage
 
 workflow_run_url = "https://github.com/dayanid/wakeuprunner/actions/runs/5276625801"
-api_token = "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"
+api_token = "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"
 re_run_all_jobs(workflow_run_url, api_token)
