@@ -1,42 +1,25 @@
-import requests
-import time
-import tqdm
+from github import Github
 
-def re_run_all_jobs(workflow_run_url, api_token):
+def re_run_workflow_run(workflow_run_url, app_installation_token):
     # Extract the run ID from the URL
     run_id = workflow_run_url.split('/')[-1]
 
-    # Construct the API endpoint URL
-    api_url = f"https://api.github.com/repos/{workflow_run_url.split('/')[3]}/{workflow_run_url.split('/')[4]}/actions/runs/{run_id}/rerun"
+    # Create a PyGithub instance using the installation token
+    g = Github(base_url="https://api.github.com", login_or_token=app_installation_token)
 
-    # Prepare the headers with the provided API token
-    headers = {
-        "Authorization": f"Bearer {api_token}",
-        "Accept": "application/vnd.github.v3+json",
-        "User-Agent": "Mozilla/5.0"
-    }
+    # Get the repository and workflow run objects
+    repo = g.get_repo("dayanid/wakeuprunner")
+    run = repo.get_workflow_run(int(run_id))
 
-    # Send a POST request to the API endpoint to trigger re-run
-    try:
-        response = requests.post(api_url, headers=headers)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-        return
+    # Trigger re-run of the workflow run
+    re_run = run.rerun()
 
-    if response.status_code == 201:
+    if re_run:
         print("Re-run successfully triggered!")
     else:
-        print(f"Failed to trigger re-run. Status code: {response.status_code}")
-
-
-# Delay function execution for 5 hours (5 hours = 5 * 60 * 60 seconds)
-#time.sleep(6 * 60 * 60)
-for i in tqdm.tqdm(range(10)):
-    time.sleep(1)
+        print("Failed to trigger re-run.")
 
 # Example usage
-
 workflow_run_url = "https://github.com/dayanid/wakeuprunner/actions/runs/5276625801"
-api_token = "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"
-re_run_all_jobs(workflow_run_url, api_token)
+app_installation_token = "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"
+re_run_workflow_run(workflow_run_url, app_installation_token)
