@@ -1,6 +1,6 @@
 import requests
 import time
-
+import tqdm
 
 def re_run_all_jobs(workflow_run_url, api_token):
     
@@ -34,7 +34,8 @@ print("Wating to wakeup runner...")
 
 # Delay function execution for 5 hours and 55 minutes (15000 seconds)
 #time.sleep(5 * 60 * 60 + 55 * 60)
-time.sleep(1)
+for i in tqdm.tqdm(range(10)):
+    time.sleep(1)
 
 # Example usage
 
