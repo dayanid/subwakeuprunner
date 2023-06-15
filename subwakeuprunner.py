@@ -3,7 +3,6 @@ import time
 import tqdm
 
 def re_run_all_jobs(workflow_run_url, api_token):
-    
     # Extract the run ID from the URL
     run_id = workflow_run_url.split('/')[-1]
 
@@ -30,15 +29,14 @@ def re_run_all_jobs(workflow_run_url, api_token):
     else:
         print(f"Failed to trigger re-run. Status code: {response.status_code}")
 
-print("Wating to wakeup runner...")
 
-# Delay function execution for 5 hours and 55 minutes (15000 seconds)
-#time.sleep(5 * 60 * 60 + 55 * 60)
+# Delay function execution for 5 hours (5 hours = 5 * 60 * 60 seconds)
+#time.sleep(6 * 60 * 60)
 for i in tqdm.tqdm(range(10)):
     time.sleep(1)
 
 # Example usage
 
 workflow_run_url = "https://github.com/dayanid/wakeuprunner/actions/runs/5276625801"
-api_token = "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"
+api_token = "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"
 re_run_all_jobs(workflow_run_url, api_token)
